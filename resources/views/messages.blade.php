@@ -14,10 +14,9 @@
                         <div class="panel panel-default col-md-12" style="padding-right: 0px; padding-left: 0px; !important">
                             <div class="panel-heading col-md-12 btn-group" role="group">
                                 <a href="{{ url('product', $messages->ProductID) }}" class="btn btn-secondary">Someone booked your post: <b>{{$messages->Title}}</b></a>
+                                <a href="{{route('messages.update', $messages->ProductID)}}" class="btn">View</a>
                             </div>
-                            <div class="panel-body">
-                            </div>
-                        </div>
+                        
                     @endforeach
                 </div>
             </div>
