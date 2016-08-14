@@ -15,14 +15,19 @@
                             'method'=>'patch',
                             'route'=>['messages.update', $messages->id]
                             ])!!}
-                        <div class="panel panel-default col-md-12" style="padding-right: 0px; padding-left: 0px; !important">
-                            <div class="panel-heading col-md-12 btn-group" role="group">
-                                <a href="{{ url('product', $messages->ProductID) }}" class="btn btn-secondary">Someone booked your post: <b>{{$messages->Title}}</b></a>
-                                {{-- <a href="{{route('messages.edit', $messages->ProductID)}}" class="btn">View</a>
-                                <a href="{{action('MessagesController@update', $messages->Code)}}">Link name/Embedded Button</a> --}}
-                                {!!Form::submit('View', array('class' => 'btn btn-primary'))!!}
+                            <div class="panel panel-default col-md-12" style="padding-right: 0px; padding-left: 0px; !important">
+                            @if($messages->isReadOwner == 0)
+                                <div class="panel-heading col-md-12 btn-group" role="group">
+                            @else
+                                <div class="panel-heading col-md-12 btn-group" role="group" style="background-color: white !important;">
+                            @endif
+                                <a href="{{ url('product', $messages->ProductID) }}" class="btn btn-secondary">Someone booked your post: <b>{{$messages->Title}}</b></a>    
+                            <div>
+                                {!!Form::submit('View', array('class' => 'btn btn-primary '))!!}
+                            </div>           
                             </div>
-                            <input id="product_codeproduct_code" name="product_code" type="hidden" value="{{$messages->id}}">                        
+                            <input id="product_code" name="product_code" type="hidden" value="{{$messages->id}}">
+                            <input id="product_id" name="product_id" type="hidden" value="{{$messages->ProductID}}">                     
                     {!!Form::close()!!}
                     @endforeach
                 </div>

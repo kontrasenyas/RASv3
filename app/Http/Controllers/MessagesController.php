@@ -10,6 +10,7 @@ use DB;
 use App\Product;
 use App\BookingNotification;
 use App\Booking;
+use App\Http\Controllers\ProductController;
 
 class MessagesController extends Controller
 {
@@ -29,7 +30,7 @@ class MessagesController extends Controller
             ->orderBy("bookings.DateCreated", "desc")
             //->orWhere('description', 'LIKE', '%'. $searchterm .'%')
             //->orWhere('brand', 'LIKE', '%'. $searchterm .'%')
-            ->get();
+            ->get();        
         return view('messages')->with('messages', $messages);;
     }
 
@@ -103,9 +104,9 @@ class MessagesController extends Controller
 
         $Booking->isReadOwner = '1';
         $Booking->save();
-
-        
-
+        $id = $request->input('product_id');
+      
+        return redirect()->route('product.show', ['id' => $id]);
     }
 
     /**
