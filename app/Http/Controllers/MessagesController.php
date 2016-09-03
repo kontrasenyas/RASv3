@@ -21,17 +21,22 @@ class MessagesController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        $userEmail = $user->email;
-        $products = DB::table('products');
-        $messages = $products
-            ->join('bookings', 'products.id', '=', 'bookings.ProductID')
-            ->where('EmailAddress', '=', ''. $userEmail . '')
-            ->orderBy("bookings.DateCreated", "desc")
-            //->orWhere('description', 'LIKE', '%'. $searchterm .'%')
-            //->orWhere('brand', 'LIKE', '%'. $searchterm .'%')
-            ->get();        
-        return view('messages')->with('messages', $messages);;
+        if (Auth::check()) {        
+            $user = Auth::user();
+            $userEmail = $user->email;
+            $products = DB::table('products');
+            $messages = $products
+                ->join('bookings', 'products.id', '=', 'bookings.ProductID')
+                ->where('EmailAddress', '=', ''. $userEmail . '')
+                ->orderBy("bookings.DateCreated", "desc")
+                //->orWhere('description', 'LIKE', '%'. $searchterm .'%')
+                //->orWhere('brand', 'LIKE', '%'. $searchterm .'%')
+                ->get();        
+            return view('messages')->with('messages', $messages);;
+        }
+        else {
+            return view('errors.error');
+        }
     }
 
     /**

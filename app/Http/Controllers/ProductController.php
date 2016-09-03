@@ -12,6 +12,7 @@ use Auth;
 use DB;
 use Session;
 use App\User;
+use App\UUID;
 
 class ProductController extends Controller
 {
@@ -73,13 +74,18 @@ class ProductController extends Controller
             ]);
 
         $product = new Product;
-        $user = $request->user();
+        if (Auth::check()) {
+            $user = $request->user();
+            $product->EmailAddress = $user->email;
+        }
+        else{
+            $product->EmailAddress = new UUID($request->input('Title') . '_');
+        }
 
         $product->Title = ltrim($request->input('Title'), ' ');
         $product->Capacity = ltrim($request->input('Capacity'), '0');
         $product->Brand = ltrim($request->input('Brand'), ' ');
-        $product->EmailAddress = $user->email;
-        $product->Province = $user->Province;
+        //$product->Province = $user->Province;
         $product->Details = $request->input('Details');
         $product->DateCreated = date('Y-m-d H:i:s');
         $product->ProductType = $request->input('CarType');
@@ -105,7 +111,12 @@ class ProductController extends Controller
         $product = Product::Create($inputs);
         */
         //return 'Product record successfully created with id ' . $product->id;
-        return redirect()->route('product.index');
+        if (Auth::check()) {
+            return redirect()->route('product.index');
+        }
+        else{
+            return redirect()->route('product.create');
+        }
     }
 
     /**
